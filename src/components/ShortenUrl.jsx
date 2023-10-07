@@ -27,6 +27,7 @@ export default function ShortenUrl() {
   const [inputUrl, setInputUrl] = useState('');
   const [shortenedUrl, setShortenedUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isShortened, setIsShortened] = useState(false);
 
   const displayToast = (title, description, status) => {
     toast({
@@ -41,6 +42,7 @@ export default function ShortenUrl() {
 
   const handleShortenSuccess = (res) => {
     setShortenedUrl(res.data.data.shortenedUrl);
+    setIsShortened(true);
     displayToast("Shortening URL Success", res.data.message, "success");
   }
 
@@ -82,7 +84,10 @@ export default function ShortenUrl() {
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
-          p={8}>
+          p={8}
+          transition="height 0.3s ease"
+          h={isShortened ? '250px' : '190px'}
+        >
           <Stack spacing={4}>
             <FormControl id="url">
               <FormLabel>Paste URL to be shortened</FormLabel>
@@ -111,7 +116,7 @@ export default function ShortenUrl() {
                   <InputRightElement h={'full'}>
                     <Button
                       variant={'ghost'}
-                      onClick={''}>
+                      onClick={navigator.clipboard.writeText(shortenedUrl)}>
                       {<CopyIcon />}
                     </Button>
                   </InputRightElement>
