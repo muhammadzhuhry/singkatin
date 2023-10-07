@@ -12,17 +12,42 @@ import {
   useColorModeValue,
   InputGroup,
   InputRightElement,
+  useToast,
 } from '@chakra-ui/react'
 
+import axios from 'axios';
 import { CopyIcon } from '@chakra-ui/icons'
+import { useState } from 'react';
+import { BASIC_AUTH } from '../constant';
+import services from '../config/services';
 
 export default function ShortenUrl() {
+  const toast = useToast();
+
+  const [inputUrl, setInputUrl] = useState('');
+  const [shortenedUrl, setShortenedUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleShorten = async () => {
+    const payload = {
+      url: inputUrl
+    }
+
+    try {
+      const res = await axios.post(`${services.BASE_URL}/v1/url/shorten`, payload, BASIC_AUTH.token);
+      setShortenedUrl(res.data.data.shortenedUrl);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <Flex
       minH={'100vh'}
       align={'center'}
       justify={'center'}
-      // bg={useColorModeValue('gray.50', 'gray.800')}
       marginTop={'-100px'}
     >
       <Stack w={'100%'} spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
@@ -37,28 +62,38 @@ export default function ShortenUrl() {
           <Stack spacing={4}>
             <FormControl id="url">
               <FormLabel>Paste URL to be shortened</FormLabel>
-              <Input type='url' placeholder='https://www.singkatin.online' />
+              <Input 
+                type='url' 
+                placeholder='https://www.singkatin.online'
+                value={inputUrl}
+                onChange={(e) => setInputUrl(e.target.value)}
+              />
             </FormControl>
             <Stack spacing={10}>
               <Button
+                isLoading={isLoading}
+                loadingText='Shortening...'
                 colorScheme='teal'
+                onClick={handleShorten}
               >
                 Shorten
               </Button>
             </Stack>
 
-            <FormControl id="password" isRequired>
-              <InputGroup>
-                <Input variant={'filled'} textColor={'teal'} value={'https://www.singkatin/89kdfapp'} />
-                <InputRightElement h={'full'}>
-                  <Button
-                    variant={'ghost'}
-                    onClick={''}>
-                    {<CopyIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
+            {shortenedUrl && (
+              <FormControl id="shorten" isRequired>
+                <InputGroup>
+                  <Input variant={'filled'} textColor={'teal'} value={shortenedUrl} />
+                  <InputRightElement h={'full'}>
+                    <Button
+                      variant={'ghost'}
+                      onClick={''}>
+                      {<CopyIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+            )}
           </Stack>
         </Box>
       </Stack>
