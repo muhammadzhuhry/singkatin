@@ -28,6 +28,30 @@ export default function ShortenUrl() {
   const [shortenedUrl, setShortenedUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const displayToast = (title, description, status) => {
+    toast({
+      position: "top-right",
+      title,
+      description,
+      status,
+      duration: 5000,
+      isClosable: true, 
+    });
+  }
+
+  const handleShortenSuccess = (res) => {
+    setShortenedUrl(res.data.data.shortenedUrl);
+    displayToast("Shortening URL Success", res.data.message, "success");
+  }
+
+  const handleShortenError = (error) => {
+    if (error.response) {
+      displayToast("Shortening URL Error", error.response.data.message, "error");
+    } else {
+      displayToast("Shortening URL Error", "An error occurred while shortening url. Please try again." ,"error");
+    }
+  }
+
   const handleShorten = async () => {
     const payload = {
       url: inputUrl
@@ -35,9 +59,9 @@ export default function ShortenUrl() {
 
     try {
       const res = await axios.post(`${services.BASE_URL}/v1/url/shorten`, payload, BASIC_AUTH.token);
-      setShortenedUrl(res.data.data.shortenedUrl);
+      handleShortenSuccess(res);
     } catch (error) {
-      console.log(error)
+      handleShortenError(error);
     } finally {
       setIsLoading(false);
     }
