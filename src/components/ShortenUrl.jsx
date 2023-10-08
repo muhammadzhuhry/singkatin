@@ -23,6 +23,7 @@ import services from '../config/services';
 
 export default function ShortenUrl() {
   const toast = useToast();
+  const baseURL = window.location.origin;
 
   const [inputUrl, setInputUrl] = useState('');
   const [shortenedUrl, setShortenedUrl] = useState('');
@@ -41,7 +42,7 @@ export default function ShortenUrl() {
   }
 
   const handleShortenSuccess = (res) => {
-    setShortenedUrl(res.data.data.shortenedUrl);
+    setShortenedUrl(`${baseURL}/redirect/${res.data.data.shortUrl}`);
     setIsShortened(true);
     displayToast("Shortening URL Success", res.data.message, "success");
   }
