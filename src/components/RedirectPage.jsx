@@ -31,8 +31,8 @@ export default function RedirectPage() {
       })
       .catch(() => {
         setIsError(true);
-      }, [shortenedUrl])
-  })
+      })
+  }, [shortenedUrl])
 
   useEffect(() => {
     const countdownTimer = setInterval(() => {
