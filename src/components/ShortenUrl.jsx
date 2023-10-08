@@ -78,7 +78,7 @@ export default function ShortenUrl() {
     >
       <Stack w={'100%'} spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'}>Singkatin ✂️</Heading>
+          <Heading fontSize={'4xl'} color={'gray.600'}>Singkatin ✂️</Heading>
         </Stack>
         <Box
           rounded={'lg'}
@@ -90,7 +90,7 @@ export default function ShortenUrl() {
         >
           <Stack spacing={4}>
             <FormControl id="url">
-              <FormLabel>Paste URL to be shortened</FormLabel>
+              <FormLabel color={'gray.600'}>Paste URL to be shortened</FormLabel>
               <Input 
                 type='url' 
                 placeholder='https://www.singkatin.online'
