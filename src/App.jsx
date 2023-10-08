@@ -1,12 +1,17 @@
 import './styles.css';
 import ShortenUrl from './components/ShortenUrl';
-import { ChakraProvider } from '@chakra-ui/react';
+import RedirectPage from './components/RedirectPage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 
 function App() {
   return (
-    <ChakraProvider>
-        <ShortenUrl />
-    </ChakraProvider>
+    <Router>
+      <Routes>
+        <Route exact path='/' Component={ShortenUrl} />
+        <Route path='/redirect/:shortenedUrl' Component={RedirectPage} />
+      </Routes>
+    </Router>
   );
 }
 
