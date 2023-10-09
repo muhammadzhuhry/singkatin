@@ -8,8 +8,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path='/' Component={ShortenUrl} />
-        <Route path='/redirect/:shortenedUrl' Component={RedirectPage} />
+        <Route exact path='/' element={<ShortenUrl />} />
+        <Route path='/redirect/:shortenedUrl' element={<RedirectPage />} />
       </Routes>
     </Router>
   );
